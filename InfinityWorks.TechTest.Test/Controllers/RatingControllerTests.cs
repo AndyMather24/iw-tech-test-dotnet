@@ -11,6 +11,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
 {
     class RatingControllerTests
     {
+
+
         [Test]
         public async Task GetAsync_ReturnsAllAuthorities()
         {
@@ -31,12 +33,33 @@ namespace InfinityWorks.TechTest.Test.Controllers
 
             // Assert
             Assert.IsInstanceOf<IEnumerable<Authority>>(jsonResult.Value);
-            var authorities = ((IEnumerable<Authority>) jsonResult.Value).ToArray();
+            var authorities = ((IEnumerable<Authority>)jsonResult.Value).ToArray();
             Assert.AreEqual(authorities.Length, 2);
             Assert.AreEqual(authorities[0].Name, "authority1");
             Assert.AreEqual(authorities[0].Id, 1);
             Assert.AreEqual(authorities[1].Name, "authority2");
             Assert.AreEqual(authorities[1].Id, 2);
         }
+
+
+        [Test]
+        public async Task GetRatingsAsync_AuthorityId_InvokesGetEstablishmentsWithAuthorityIdOnce()
+        {
+            //  Arrange 
+            var authorityId = 1;
+            var fsaClientMock = new Mock<IFsaClient>();
+
+            var sut = new RatingController(fsaClientMock.Object);
+            // Act 
+            var jsonResult = await sut.GetRatingsAsync(authorityId);
+
+            // Assert
+            fsaClientMock.Verify(x => x.GetEstablishmentsAsync(authorityId), Times.Once);
+
+        }
+
+     
+
+
     }
 }
