@@ -17,6 +17,8 @@ namespace InfinityWorks.TechTest.Test.Services
         {
 			_serviceProviderMock = new Mock<IServiceProvider>();
 			_serviceProviderMock.Setup(x => x.GetService(typeof(FHRSRatings))).Returns(new FHRSRatings());
+			_serviceProviderMock.Setup(x => x.GetService(typeof(FHISRatings))).Returns(new FHISRatings());
+
 		}
 
 		[Test]
