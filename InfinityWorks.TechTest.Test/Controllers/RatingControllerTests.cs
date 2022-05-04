@@ -1,4 +1,5 @@
 ﻿using InfinityWorks.TechTest.Controllers;
+using InfinityWorks.TechTest.Enum;
 using InfinityWorks.TechTest.Model;
 using InfinityWorks.TechTest.Services;
 using Moq;
@@ -12,6 +13,20 @@ namespace InfinityWorks.TechTest.Test.Controllers
     class RatingControllerTests
     {
 
+        private Mock<IFsaClient> _fsaClientMock;
+        private Mock<IRatingCalulatorResolver> _ratingCalulatorResolver;
+        private RatingController _sut;
+
+        private const int AuthorityId = 1;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _fsaClientMock = new Mock<IFsaClient>();
+            _ratingCalulatorResolver = new Mock<IRatingCalulatorResolver>();
+            _sut = new RatingController(_fsaClientMock.Object, _ratingCalulatorResolver.Object);
+
+        }
 
         [Test]
         public async Task GetAsync_ReturnsAllAuthorities()
@@ -24,12 +39,11 @@ namespace InfinityWorks.TechTest.Test.Controllers
                 new FsaAuthority { Name = "authority2", LocalAuthorityId = 2 }
             };
 
-            var fsaClient = new Mock<IFsaClient>();
-            fsaClient.Setup(c => c.GetAuthorities()).ReturnsAsync(authorityList);
-            var controller = new RatingController(fsaClient.Object);
 
+            _fsaClientMock.Setup(c => c.GetAuthorities()).ReturnsAsync(authorityList);
+         
             // Act
-            var jsonResult = await controller.GetAsync();
+            var jsonResult = await _sut.GetAsync();
 
             // Assert
             Assert.IsInstanceOf<IEnumerable<Authority>>(jsonResult.Value);
@@ -45,21 +59,39 @@ namespace InfinityWorks.TechTest.Test.Controllers
         [Test]
         public async Task GetRatingsAsync_AuthorityId_InvokesGetEstablishmentsWithAuthorityIdOnce()
         {
-            //  Arrange 
-            var authorityId = 1;
-            var fsaClientMock = new Mock<IFsaClient>();
 
-            var sut = new RatingController(fsaClientMock.Object);
-            // Act 
-            var jsonResult = await sut.GetRatingsAsync(authorityId);
+            // Act
+            var establishments = new FSAEstablishmentList();
+            
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1" });
+
+            _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
+
+            var jsonResult = await _sut.GetRatingsAsync(AuthorityId);
 
             // Assert
-            fsaClientMock.Verify(x => x.GetEstablishmentsAsync(authorityId), Times.Once);
+            _fsaClientMock.Verify(x => x.GetEstablishmentsAsync(AuthorityId), Times.Once);
 
         }
 
+        [Test]
+        public async Task GetRatingAsync_AuthorityId_InvokesResolverWithEstablishmentRatingKeyOnce()
+        {
+            // Arrange
+            var establishments = new FSAEstablishmentList();
+            establishments.RatingSchema = RatingSchema.FHRS;
+            _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
+            _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
+
+            // Act
+            var result =_sut.GetRatingsAsync(AuthorityId);
+
+            // Assert
+            _ratingCalulatorResolver.Verify(x => x.Resolve(establishments.RatingSchema), Times.Once);
+  
+        }
+
      
-
-
     }
 }

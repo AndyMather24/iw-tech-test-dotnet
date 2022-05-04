@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InfinityWorks.TechTest.Model;
@@ -12,10 +13,13 @@ namespace InfinityWorks.TechTest.Controllers
     public class RatingController : Controller
     {
         private readonly IFsaClient _fSaClient;
+        private readonly IRatingCalulatorResolver _ratingCalulatorResolver;
 
-        public RatingController(IFsaClient fSaClient)
+        public RatingController(IFsaClient fSaClient, IRatingCalulatorResolver ratingCalulatorResolver)
         {
             _fSaClient = fSaClient;
+            _ratingCalulatorResolver = ratingCalulatorResolver;
+
         }
 
         /// <summary>
@@ -40,30 +44,15 @@ namespace InfinityWorks.TechTest.Controllers
         /// The ratings to display
         /// </returns>
         [HttpGet("{authorityId}")]
-        public JsonResult Get(int authorityId)
+        public async Task<JsonResult> GetRatingsAsync(int authorityId)
         {
-            //This is just sample data to demonstrate the contract of the API
-            var ratings = new List<AuthorityRatingItem>();
-            if (authorityId == 1)
-            {
-                ratings.Add(new AuthorityRatingItem { Name = "5-star", Value = 22.41 });
-                ratings.Add(new AuthorityRatingItem { Name = "4-star", Value = 43.13 });
-                ratings.Add(new AuthorityRatingItem { Name = "3-star", Value = 12.97 });
-                ratings.Add(new AuthorityRatingItem { Name = "2-star", Value = 1.54 });
-                ratings.Add(new AuthorityRatingItem { Name = "1-star", Value = 17.84 });
-                ratings.Add(new AuthorityRatingItem { Name = "Exempt", Value = 2.11 });
-            }
-            else
-            {
-                ratings.Add(new AuthorityRatingItem { Name = "5-star", Value = 50 });
-                ratings.Add(new AuthorityRatingItem { Name = "4-star", Value = 0 });
-                ratings.Add(new AuthorityRatingItem { Name = "3-star", Value = 0 });
-                ratings.Add(new AuthorityRatingItem { Name = "2-star", Value = 0 });
-                ratings.Add(new AuthorityRatingItem { Name = "1-star", Value = 25 });
-                ratings.Add(new AuthorityRatingItem { Name = "Exempt", Value = 25 });
-            }
 
-            return Json(ratings);
+            var establishments = await _fSaClient.GetEstablishmentsAsync(authorityId);
+
+            var ratingCalulator = _ratingCalulatorResolver.Resolve(establishments.RatingSchema); 
+          
+
+            return Json(establishments);
         }
     }
 }
