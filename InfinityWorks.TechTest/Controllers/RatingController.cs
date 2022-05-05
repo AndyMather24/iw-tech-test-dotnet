@@ -49,10 +49,11 @@ namespace InfinityWorks.TechTest.Controllers
 
             var establishments = await _fSaClient.GetEstablishmentsAsync(authorityId);
 
-            var ratingCalulator = _ratingCalulatorResolver.Resolve(establishments.RatingSchema); 
-          
+            var ratingCalulator = _ratingCalulatorResolver.Resolve(establishments.RatingSchema);
 
-            return Json(establishments);
+            var ratingItems = ratingCalulator.GetRatingItems(establishments.FSAEstablishments);
+
+            return Json(ratingItems);
         }
     }
 }
