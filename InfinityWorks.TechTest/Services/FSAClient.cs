@@ -16,9 +16,17 @@ namespace InfinityWorks.TechTest.Services
             _httpClientFactory = httpClientFactory;
         }
 
+
+
         public async Task<FsaAuthorityList> GetAuthorities()
         {
             return await GetFsaResource<FsaAuthorityList>("Authorities");
+        }
+
+        public async Task<FSAEstablishmentList> GetEstablishmentsAsync(int authorityId)
+        {
+            var path = $"Establishments?localAuthorityId={authorityId}";
+            return await GetFsaResource<FSAEstablishmentList>(path);
         }
 
         private async Task<T> GetFsaResource<T>(string path)

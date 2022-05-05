@@ -8,5 +8,6 @@ namespace InfinityWorks.TechTest.Services
         Task<FsaAuthorityList> GetAuthorities();
 
         Task<FSAEstablishmentList> GetEstablishmentsAsync(int authorityId);
+
     }
 }
