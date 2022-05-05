@@ -26,6 +26,10 @@ namespace InfinityWorks.TechTest.Test.Controllers
             _ratingCalulatorResolver = new Mock<IRatingCalulatorResolver>();
             _sut = new RatingController(_fsaClientMock.Object, _ratingCalulatorResolver.Object);
 
+            _ratingCalulatorResolver.Setup(x => x.Resolve(RatingSchema.FHIS)).Returns(new FHISRatings());
+
+            _ratingCalulatorResolver.Setup(x => x.Resolve(RatingSchema.FHRS)).Returns(new FHRSRatings());
+
         }
 
         [Test]
@@ -63,8 +67,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
             // Act
             var establishments = new FSAEstablishmentList();
             
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5" });
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", RatingKey = "fhrs_5_en-gb" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", RatingKey = "fhrs_5_en-gb" });
 
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
 
@@ -80,7 +84,6 @@ namespace InfinityWorks.TechTest.Test.Controllers
         {
             // Arrange
             var establishments = new FSAEstablishmentList();
-            establishments.RatingSchema = RatingSchema.FHRS;
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
 
