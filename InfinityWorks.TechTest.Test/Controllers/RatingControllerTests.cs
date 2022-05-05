@@ -95,6 +95,40 @@ namespace InfinityWorks.TechTest.Test.Controllers
   
         }
 
-     
+
+        [Test]
+        public async Task GetRatingAsync_AuthorityId_ReturnsRatingItems()
+        {
+            // Arrange
+            var establishments = new FSAEstablishmentList();
+
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", RatingKey = "fhrs_5_en-gb" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", RatingKey = "fhrs_5_en-gb" });
+
+            var authorityRatingItems = new List<AuthorityRatingItem>()
+            {
+                new AuthorityRatingItem() {Name = "5" , Value = 50.00},
+                new AuthorityRatingItem() {Name = "4", Value = 0 },
+                new AuthorityRatingItem() {Name = "3", Value = 0 },
+                new AuthorityRatingItem() {Name = "2", Value = 0 },
+                new AuthorityRatingItem() {Name = "1", Value = 50.00 }
+            };
+
+            _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
+
+            // Act
+            var result = await _sut.GetRatingsAsync(AuthorityId);
+
+            // Assert
+            Assert.IsInstanceOf<IEnumerable<AuthorityRatingItem>>(result.Value);
+            var ratingItems = ((IEnumerable<AuthorityRatingItem>)result.Value).ToArray();
+            Assert.AreEqual(authorityRatingItems[0].Name, ratingItems[0].Name);
+            Assert.AreEqual(authorityRatingItems[1].Name, ratingItems[1].Name);
+            Assert.AreEqual(authorityRatingItems[2].Name, ratingItems[2].Name);
+            Assert.AreEqual(authorityRatingItems[3].Name, ratingItems[3].Name);
+            Assert.AreEqual(authorityRatingItems[4].Name, ratingItems[4].Name);
+           
+        }
+
     }
 }
