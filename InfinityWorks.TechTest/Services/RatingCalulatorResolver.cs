@@ -1,5 +1,6 @@
 ﻿using System;
 using InfinityWorks.TechTest.Enum;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinityWorks.TechTest.Services
@@ -8,6 +9,9 @@ namespace InfinityWorks.TechTest.Services
 	{
 
         private readonly IServiceProvider _serviceProvider;
+
+        private IRatingCalulator _ratingCalulator;
+
 
         public RatingCalulatorResolver(IServiceProvider serviceProvider)
 		{
@@ -19,14 +23,19 @@ namespace InfinityWorks.TechTest.Services
             switch (ratingSchema)
             {
                 case RatingSchema.FHRS:
-                    return _serviceProvider.GetService<FHRSRatings>();
+                    _ratingCalulator = _serviceProvider.GetRequiredService<FHRSRatings>();
+                    break;
                 case RatingSchema.FHIS:
-                    return _serviceProvider.GetService<FHISRatings>();
+                    _ratingCalulator = _serviceProvider.GetRequiredService<FHISRatings>();
+                    break;
                 default:
                     return null;
             
             }
+
+            return _ratingCalulator;
         }
+
     }
 }
 
