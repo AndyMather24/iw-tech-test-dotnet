@@ -10,7 +10,8 @@ namespace InfinityWorks.TechTest.Services
 	public class FHRSRatings : IRatingCalulator
 	{
 
-		private readonly List<string> _ratingNames; 
+		private readonly List<string> _ratingNames;
+		private IRatingCalulator _ratingCalulator;
 
 		public FHRSRatings()
 		{
@@ -19,20 +20,13 @@ namespace InfinityWorks.TechTest.Services
 
         public List<AuthorityRatingItem> GetRatingItems(List<FSAEstablishment> fSAEstablishments)
         {
-			IRatingCalulator ratingCalulator = this;
-			var authorityRatings = new List<AuthorityRatingItem>();
+			_ratingCalulator = this;
 
-			var ratingsGroupedByName = fSAEstablishments.GroupBy(e => e.RatingValue);
+			var authorityRatings = new List<AuthorityRatingItem>();
 
 			for (int i = 0; i < _ratingNames.Count; i++)
 			{
-				var ratingGroupList = ratingsGroupedByName.FirstOrDefault(g => g.Key.ToLower() == _ratingNames[i].ToLower())?.ToList();
-
-				authorityRatings.Add(new AuthorityRatingItem()
-				{
-					Name = _ratingNames[i],
-					Value = ratingGroupList == null ? 0 : ratingCalulator.CalulatePercentage(ratingGroupList.Count(), fSAEstablishments.Count())
-				});
+				authorityRatings.Add(_ratingCalulator.CreateAuthorityRatingItem(fSAEstablishments, _ratingNames[i]));
 			};
 
 			return authorityRatings;

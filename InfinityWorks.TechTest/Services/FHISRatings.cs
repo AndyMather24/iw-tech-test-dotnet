@@ -1,25 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using InfinityWorks.TechTest.Model;
 
 namespace InfinityWorks.TechTest.Services
 {
-	public class FHRSRatings : IRatingCalulator
+	public class FHISRatings : IRatingCalulator
 	{
 
-		private readonly List<string> _ratingNames; 
+		
+		private readonly List<string> _ratingNames;
 
-		public FHRSRatings()
+        private IRatingCalulator _ratingCalulator;
+
+		public FHISRatings()
 		{
-			_ratingNames = new List<string> { "1", "2", "3", "4", "5" };
+			_ratingNames = new List<string> { "Pass and Eat Safe", "Pass", "Needs Improvement" };
+      
 		}
-
-        public Task<AuthorityRatingItem> GetRatingItems(List<FSAEstablishment> fSAEstablishments)
+		
+        public List<AuthorityRatingItem> GetRatingItems(List<FSAEstablishment> fSAEstablishments)
         {
-            throw new NotImplementedException();
+
+			_ratingCalulator = this;
+
+			var authorityRatings = new List<AuthorityRatingItem>();
+
+            for (int i = 0; i < _ratingNames.Count; i++)
+            {
+                authorityRatings.Add(_ratingCalulator.CreateAuthorityRatingItem(fSAEstablishments,_ratingNames[i]));
+            };
+            
+			return authorityRatings;
+		   
         }
+
+   
+
     }
 }
 

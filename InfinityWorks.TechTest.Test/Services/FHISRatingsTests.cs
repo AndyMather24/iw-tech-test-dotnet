@@ -96,6 +96,9 @@ namespace InfinityWorks.TechTest.Test.Services
 			var result = sut.GetRatingItems(establishments);
 
 			// Assert
+			Assert.AreEqual(authorityRatingItems[0].Name, result[0].Name);
+			Assert.AreEqual(authorityRatingItems[1].Name, result[1].Name);
+			Assert.AreEqual(authorityRatingItems[2].Name, result[2].Name);
 			Assert.AreEqual(authorityRatingItems[0].Value, result[0].Value);
 			Assert.AreEqual(authorityRatingItems[1].Value, result[1].Value);
 			Assert.AreEqual(authorityRatingItems[2].Value, result[2].Value);

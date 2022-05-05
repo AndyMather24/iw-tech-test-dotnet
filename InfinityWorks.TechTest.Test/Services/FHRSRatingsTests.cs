@@ -57,6 +57,8 @@ namespace InfinityWorks.TechTest.Test.Services
 			Assert.AreEqual(result[2].Value, authorityRatingItems[2].Value);
 		}
 
+
+
 	[Test]
 	public void GetRatingItems_ReturnsRatingItemsWithValuePercentage()
         {
@@ -100,19 +102,20 @@ namespace InfinityWorks.TechTest.Test.Services
 					RatingValue = "2"
 				}
 			};
-			var sut = new FHISRatings();
+
+			var sut = new FHRSRatings();
 
 			// Act
 			var result = sut.GetRatingItems(establishments);
 
 			// Assert
-
 			Assert.AreEqual(authorityRatingItems[0].Name, result[0].Name);
 			Assert.AreEqual(authorityRatingItems[1].Name, result[1].Name);
-			Assert.AreEqual(authorityRatingItems[2].Value, result[2].Value);
+			Assert.AreEqual(authorityRatingItems[2].Name, result[2].Name);
+			Assert.AreEqual(authorityRatingItems[0].Value, result[0].Value);
 			Assert.AreEqual(authorityRatingItems[1].Value, result[1].Value);
 			Assert.AreEqual(authorityRatingItems[2].Value, result[2].Value);
-	
+
 
 		}
 	}
