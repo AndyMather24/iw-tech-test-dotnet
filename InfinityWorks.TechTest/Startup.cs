@@ -23,6 +23,10 @@ namespace InfinityWorks.TechTest
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddHttpClient();
             services.AddSingleton<IFsaClient, FsaClient>();
+            services.AddScoped<IRatingCalulatorResolver, RatingCalulatorResolver>();
+            services.AddScoped<FHRSRatings>();
+            services.AddScoped<FHISRatings>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
