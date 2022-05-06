@@ -29,7 +29,7 @@ namespace InfinityWorks.TechTest.Services
                     _ratingCalulator = _serviceProvider.GetRequiredService<FHISRatings>();
                     break;
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($"ratingSchema: {ratingSchema} is not currently support");
 
             }
 

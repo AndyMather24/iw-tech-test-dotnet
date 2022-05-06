@@ -51,16 +51,22 @@ namespace InfinityWorks.TechTest.Test.Services
 		}
 
 		[Test]
-		public void Resolver_UnSuportedRatingSchema_ThrowsNotSupportedException()
+		public void Resolver_UnsupportedRatingSchema_ThrowsNotSupportedException()
         {
 			// Arrange
 			var resolver = new RatingCalulatorResolver(_serviceProviderMock.Object);
+			var unsupportedRatingSchema = (RatingSchema)3;
 			// Act
-		
+
 			// Assert
-			Assert.Throws<NotSupportedException>(() => resolver.Resolve((RatingSchema)3));
+			var ex = Assert.Throws<NotSupportedException>(() => resolver.Resolve(unsupportedRatingSchema));
+
+			Assert.AreEqual($"ratingSchema: {unsupportedRatingSchema} is not currently support", ex.Message);
 
         }
+
+		// 
+
 	}
 }
 
