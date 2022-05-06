@@ -1,4 +1,4 @@
-namespace InfinityWorks.TechTest.Model
+﻿namespace InfinityWorks.TechTest.Model
 {
     /// <summary>
     /// A single rating item.
@@ -15,5 +15,6 @@ namespace InfinityWorks.TechTest.Model
         {
             return $"AuthorityRatingItem[{nameof(Name)}='{Name}', {nameof(Value)}={Value}]";
         }
+
     }
 }
