@@ -16,19 +16,10 @@ namespace InfinityWorks.TechTest.Test.Services
 			// Arrange
 			var authorityRatingItems = new List<AuthorityRatingItem>()
 			{
+				
 				new AuthorityRatingItem()
 				{
-					Name = "1",
-					Value = 0.0
-				},
-				new AuthorityRatingItem()
-				{
-					Name = "2",
-					Value = 0.0
-				},
-				new AuthorityRatingItem()
-				{
-					Name = "3",
+					Name = "5",
 					Value = 0.0
 				},
 				new AuthorityRatingItem()
@@ -38,9 +29,25 @@ namespace InfinityWorks.TechTest.Test.Services
 				},
 				new AuthorityRatingItem()
 				{
-					Name = "5",
+					Name = "3",
+					Value = 0.0
+				},
+				new AuthorityRatingItem()
+				{
+					Name = "2",
+					Value = 0.0
+				},
+				new AuthorityRatingItem()
+				{
+					Name = "1",
+					Value = 0.0
+				},
+				new AuthorityRatingItem()
+                {
+					Name = "Exempt",
 					Value = 0.0
 				}
+
 			};
 
 			var sut = new FHRSRatings();
@@ -49,49 +56,72 @@ namespace InfinityWorks.TechTest.Test.Services
 			var result = sut.GetRatingItems(new List<FSAEstablishment>());
 
 			// Assert
-			Assert.AreEqual(result[0].Name, authorityRatingItems[0].Name);
-			Assert.AreEqual(result[1].Name, authorityRatingItems[1].Name);
-			Assert.AreEqual(result[2].Name, authorityRatingItems[2].Name);
-			Assert.AreEqual(result[0].Value, authorityRatingItems[0].Value);
-			Assert.AreEqual(result[1].Value, authorityRatingItems[1].Value);
-			Assert.AreEqual(result[2].Value, authorityRatingItems[2].Value);
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[0].Name));
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[1].Name));
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[2].Name));
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[3].Name));
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[4].Name));
+			Assert.That(result,
+				Has.Exactly(1).Matches<AuthorityRatingItem>(r => r.Name == authorityRatingItems[5].Name));
 		}
 
 
 
-	[Test]
-	public void GetRatingItems_ReturnsRatingItemsWithValuePercentage()
-        {
+		[Test]
+		public void GetRatingItems_ReturnsRatingItemsWithValuePercentage()
+		{
 			//Arrange
 			var authorityRatingItems = new List<AuthorityRatingItem>()
 			{
+
 				new AuthorityRatingItem()
 				{
-					Name = "1",
-					Value = 25.0
-				},
-					new AuthorityRatingItem()
-				{
-					Name = "2",
+					Name = "5",
 					Value = 75.0
 				},
-							new AuthorityRatingItem()
+				new AuthorityRatingItem()
+				{
+					Name = "4",
+					Value = 0.0
+				},
+				new AuthorityRatingItem()
 				{
 					Name = "3",
 					Value = 0.0
+				},
+				new AuthorityRatingItem()
+				{
+					Name = "2",
+					Value = 25.0
+				},
+				new AuthorityRatingItem()
+				{
+					Name = "1",
+					Value = 0.0
+				},
+				new AuthorityRatingItem()
+				{
+					Name = "Exempt",
+					Value = 0.0
 				}
+
 			};
 
 			var establishments = new List<FSAEstablishment>()
 			{
 				new FSAEstablishment()
 				{
-					RatingValue = "1"
+					RatingValue = "5"
 
 				},
 				new FSAEstablishment()
 				{
-					RatingValue = "2"
+					RatingValue = "5"
 				},
 				new FSAEstablishment()
 				{
@@ -99,25 +129,22 @@ namespace InfinityWorks.TechTest.Test.Services
 				},
 				new FSAEstablishment()
 				{
-					RatingValue = "2"
+					RatingValue = "5"
 				}
 			};
-
 			var sut = new FHRSRatings();
 
 			// Act
 			var result = sut.GetRatingItems(establishments);
 
 			// Assert
-			Assert.AreEqual(authorityRatingItems[0].Name, result[0].Name);
-			Assert.AreEqual(authorityRatingItems[1].Name, result[1].Name);
-			Assert.AreEqual(authorityRatingItems[2].Name, result[2].Name);
 			Assert.AreEqual(authorityRatingItems[0].Value, result[0].Value);
 			Assert.AreEqual(authorityRatingItems[1].Value, result[1].Value);
 			Assert.AreEqual(authorityRatingItems[2].Value, result[2].Value);
-
-
+			Assert.AreEqual(authorityRatingItems[3].Value, result[3].Value);
+			Assert.AreEqual(authorityRatingItems[4].Value, result[4].Value);
 		}
+
 	}
 }
 

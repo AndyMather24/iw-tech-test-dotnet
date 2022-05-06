@@ -15,7 +15,7 @@ namespace InfinityWorks.TechTest.Services
 
 		public FHRSRatings()
 		{
-			_ratingNames = new List<string> { "1", "2", "3", "4", "5" };
+			_ratingNames = new List<string> { "5", "4", "3", "2", "1", "Exempt" };
 		}
 
         public List<AuthorityRatingItem> GetRatingItems(List<FSAEstablishment> fSAEstablishments)
