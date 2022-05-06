@@ -29,8 +29,8 @@ namespace InfinityWorks.TechTest.Services
                     _ratingCalulator = _serviceProvider.GetRequiredService<FHISRatings>();
                     break;
                 default:
-                    return null;
-            
+                    throw new NotSupportedException();
+
             }
 
             return _ratingCalulator;

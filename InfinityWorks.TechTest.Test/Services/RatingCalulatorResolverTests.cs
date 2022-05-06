@@ -49,6 +49,18 @@ namespace InfinityWorks.TechTest.Test.Services
 			Assert.IsInstanceOf<FHISRatings>(result);
 
 		}
+
+		[Test]
+		public void Resolver_UnSuportedRatingSchema_ThrowsNotSupportedException()
+        {
+			// Arrange
+			var resolver = new RatingCalulatorResolver(_serviceProviderMock.Object);
+			// Act
+		
+			// Assert
+			Assert.Throws<NotSupportedException>(() => resolver.Resolve((RatingSchema)3));
+
+        }
 	}
 }
 
