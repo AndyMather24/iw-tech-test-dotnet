@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using System.Text.Json.Serialization;
-using InfinityWorks.TechTest;
 using InfinityWorks.TechTest.Enum;
 
 namespace InfinityWorks.TechTest.Model

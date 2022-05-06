@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InfinityWorks.TechTest.Enum
+﻿namespace InfinityWorks.TechTest.Enum
 {
 	public enum RatingSchema
 	{

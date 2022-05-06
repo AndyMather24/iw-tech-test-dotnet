@@ -1,5 +1,4 @@
-﻿using System;
-using InfinityWorks.TechTest.Enum;
+﻿using InfinityWorks.TechTest.Enum;
 
 namespace InfinityWorks.TechTest.Services
 {

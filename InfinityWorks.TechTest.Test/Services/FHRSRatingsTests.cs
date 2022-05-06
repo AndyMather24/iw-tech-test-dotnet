@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InfinityWorks.TechTest.Model;
 using InfinityWorks.TechTest.Services;
 using NUnit.Framework;

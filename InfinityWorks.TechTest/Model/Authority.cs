@@ -1,4 +1,4 @@
-namespace InfinityWorks.TechTest.Model
+﻿namespace InfinityWorks.TechTest.Model
 {
     public class Authority
     {
