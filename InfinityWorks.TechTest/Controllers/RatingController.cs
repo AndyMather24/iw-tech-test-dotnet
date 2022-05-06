@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using InfinityWorks.TechTest.Model;
 using InfinityWorks.TechTest.Services;
@@ -44,14 +45,23 @@ namespace InfinityWorks.TechTest.Controllers
         [HttpGet("{authorityId}")]
         public async Task<JsonResult> GetRatingsAsync(int authorityId)
         {
+            try
+            {
 
-            var establishments = await _fSaClient.GetEstablishmentsAsync(authorityId);
+                var establishments = await _fSaClient.GetEstablishmentsAsync(authorityId);
 
-            var ratingCalulator = _ratingCalulatorResolver.Resolve(establishments.RatingSchema);
+                var ratingCalulator = _ratingCalulatorResolver.Resolve(establishments.RatingSchema);
 
-            var ratingItems = ratingCalulator.GetRatingItems(establishments.FSAEstablishments);
+                var ratingItems = ratingCalulator.GetRatingItems(establishments.FSAEstablishments);
 
-            return Json(ratingItems);
+                return Json(ratingItems);
+            } catch(Exception e)
+            {
+
+                //TODO: once inject a logger into this controller I can then log the exception details
+                throw; 
+            }
+
         }
     }
 }
