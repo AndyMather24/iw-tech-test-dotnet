@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace InfinityWorks.TechTest.Model
@@ -12,5 +12,6 @@ namespace InfinityWorks.TechTest.Model
         {
             return $"FSAAuthorityList[{nameof(Authorities)}={Authorities}]";
         }
+
     }
 }
