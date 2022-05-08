@@ -144,6 +144,27 @@ namespace InfinityWorks.TechTest.Test.Services
 			Assert.AreEqual(authorityRatingItems[4].Value, result[4].Value);
 		}
 
+
+
+
+
+		[Test]
+		[TestCase(1, 100, 1.00)]
+		[TestCase(5, 20, 25.00)]
+		public void GetPercentage_ReturnsPercentage(int ratingCount, int totalCount, double expected)
+		{
+			//Arrange
+
+			IRatingCalulator sut = new FHRSRatings();
+			// Act
+			var result = sut.CalulatePercentage(ratingCount, totalCount);
+
+			// Assert
+			Assert.AreEqual(result, expected);
+		
+		}
+
+
 	}
 }
 
