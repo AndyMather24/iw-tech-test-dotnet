@@ -67,8 +67,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
             // Act
             var establishments = new FSAEstablishmentList();
             
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", RatingKey = "fhrs_5_en-gb" });
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", RatingKey = "fhrs_5_en-gb" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", SchemeType = "FHRS" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", SchemeType = "FHRS" });
 
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
 
@@ -88,7 +88,7 @@ namespace InfinityWorks.TechTest.Test.Controllers
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
 
             // Act
-            var result =_sut.GetRatingsAsync(AuthorityId);
+            var result = _sut.GetRatingsAsync(AuthorityId);
 
             // Assert
             _ratingCalulatorResolver.Verify(x => x.Resolve(establishments.RatingSchema), Times.Once);
@@ -102,8 +102,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
             // Arrange
             var establishments = new FSAEstablishmentList();
 
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", RatingKey = "fhrs_5_en-gb" });
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", RatingKey = "fhrs_5_en-gb" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "5", SchemeType = "FHRS" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "1", SchemeType = "FHRS" });
 
             var authorityRatingItems = new List<AuthorityRatingItem>()
             {
@@ -142,8 +142,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
             // Arrange
             var establishments = new FSAEstablishmentList();
 
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "Pass", RatingKey = "fhis_pass_en-gb" });
-            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "Pass", RatingKey = "fhis_pass_en-gb" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "Pass", SchemeType = "FHIS" });
+            establishments.FSAEstablishments.Add(new FSAEstablishment { RatingValue = "Pass", SchemeType = "FHIS" });
 
             var authorityRatingItems = new List<AuthorityRatingItem>()
             {
@@ -170,6 +170,9 @@ namespace InfinityWorks.TechTest.Test.Controllers
             Assert.AreEqual(authorityRatingItems[2].Value, ratingItems[2].Value);
 
         }
+
+  
+
 
     }
 }
