@@ -4,7 +4,7 @@
     {
         public string RatingValue { set; get; }
 
-        public string RatingKey { set; get; }
+        public string SchemeType { set; get; }
 
     }
 }
