@@ -111,7 +111,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
                 new AuthorityRatingItem() {Name = "4", Value = 0 },
                 new AuthorityRatingItem() {Name = "3", Value = 0 },
                 new AuthorityRatingItem() {Name = "2", Value = 0 },
-                new AuthorityRatingItem() {Name = "1", Value = 50.00 }
+                new AuthorityRatingItem() {Name = "1", Value = 50.00 },
+                new AuthorityRatingItem() {Name="Exempt", Value = 0.0}
             };
 
             _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
@@ -132,6 +133,8 @@ namespace InfinityWorks.TechTest.Test.Controllers
             Assert.AreEqual(authorityRatingItems[2].Value, ratingItems[2].Value);
             Assert.AreEqual(authorityRatingItems[3].Value, ratingItems[3].Value);
             Assert.AreEqual(authorityRatingItems[4].Value, ratingItems[4].Value);
+            Assert.AreEqual(authorityRatingItems[5].Value, ratingItems[5].Value);
+
 
         }
 
@@ -160,7 +163,6 @@ namespace InfinityWorks.TechTest.Test.Controllers
             var result = await _sut.GetRatingsAsync(AuthorityId);
 
             // Assert
-            Assert.IsInstanceOf<IEnumerable<AuthorityRatingItem>>(result.Value);
             var ratingItems = ((IEnumerable<AuthorityRatingItem>)result.Value).ToArray();
             Assert.AreEqual(authorityRatingItems[0].Name, ratingItems[0].Name);
             Assert.AreEqual(authorityRatingItems[1].Name, ratingItems[1].Name);
@@ -171,6 +173,41 @@ namespace InfinityWorks.TechTest.Test.Controllers
 
         }
 
+        [Test]
+        public async Task GetRatingAsync_NoEstablishments_ReturnsEachRatingAsZero()
+        {
+            // Arrange
+            var establishments = new FSAEstablishmentList();
+            _fsaClientMock.Setup(x => x.GetEstablishmentsAsync(AuthorityId)).ReturnsAsync(establishments);
+
+            var authorityRatingItems = new List<AuthorityRatingItem>()
+            {
+                new AuthorityRatingItem() {Name = "5" , Value = 0.0},
+                new AuthorityRatingItem() {Name = "4", Value = 0.0 },
+                new AuthorityRatingItem() {Name = "3", Value = 0.0 },
+                new AuthorityRatingItem() {Name = "2", Value = 0.0 },
+                new AuthorityRatingItem() {Name = "1", Value = 0.0 },
+                new AuthorityRatingItem() {Name="Exempt", Value = 0.0}
+            };
+            // Act
+            var result = await _sut.GetRatingsAsync(AuthorityId);
+
+            // Assert
+            var ratingItems = ((IEnumerable<AuthorityRatingItem>)result.Value).ToArray();
+            Assert.AreEqual(authorityRatingItems[0].Name, ratingItems[0].Name);
+            Assert.AreEqual(authorityRatingItems[1].Name, ratingItems[1].Name);
+            Assert.AreEqual(authorityRatingItems[2].Name, ratingItems[2].Name);
+            Assert.AreEqual(authorityRatingItems[3].Name, ratingItems[3].Name);
+            Assert.AreEqual(authorityRatingItems[4].Name, ratingItems[4].Name);
+            Assert.AreEqual(authorityRatingItems[5].Name, ratingItems[5].Name);
+            Assert.AreEqual(authorityRatingItems[0].Value, ratingItems[0].Value);
+            Assert.AreEqual(authorityRatingItems[1].Value, ratingItems[1].Value);
+            Assert.AreEqual(authorityRatingItems[2].Value, ratingItems[2].Value);
+            Assert.AreEqual(authorityRatingItems[3].Value, ratingItems[3].Value);
+            Assert.AreEqual(authorityRatingItems[4].Value, ratingItems[4].Value);
+            Assert.AreEqual(authorityRatingItems[5].Value, ratingItems[5].Value);
+
+        }
   
 
 
