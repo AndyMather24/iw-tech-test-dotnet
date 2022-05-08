@@ -17,7 +17,6 @@ namespace InfinityWorks.TechTest.Model
         [JsonPropertyName("establishments")]
         public List<FSAEstablishment> FSAEstablishments { get; set; }
 
-       
         public RatingSchema RatingSchema {
 
             get
@@ -25,10 +24,10 @@ namespace InfinityWorks.TechTest.Model
             {
                 if(!FSAEstablishments.Any())
                 {
-                    return RatingSchema.FHRS;
+                    return RatingSchema.FHRS; 
                 }
 
-                var schemaString = FSAEstablishments.Select(x => x.RatingKey.Substring(0, 4)).First().ToUpper();
+                var schemaString = FSAEstablishments.First().SchemeType.ToUpper();
                 return System.Enum.Parse<RatingSchema>(schemaString);
             }
         }
